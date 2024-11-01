@@ -12,12 +12,16 @@ import {
   Link,
   Tabs,
   Tab,
+  Dialog,
 } from "@mui/material";
+import Preferences from "../../Component/Preferences/Preferences";
 
 const API_BASE_URL = "http://localhost:8080";
 
 const LoginSignUp: React.FC = () => {
   const [value, setValue] = useState(0);
+  const [id, setUserId] = useState<number | null>(null);
+  const [showPreferences, setShowPreferences] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -25,10 +29,15 @@ const LoginSignUp: React.FC = () => {
     last_name: "",
   });
   const [errorMessage, setErrorMessage] = useState("");
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
     setErrorMessage("");
+  };
+
+  const handleClosePreferences = () => {
+    setIsDialogOpen(false);
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -53,6 +62,15 @@ const LoginSignUp: React.FC = () => {
       });
 
       console.log("Success:", response.data);
+
+      if (value === 1) {
+        setUserId(response.data.data.user_id);
+        setIsDialogOpen(true); // Open dialog on successful signup
+      }
+
+      if (value === 0) {
+        localStorage.setItem("token", response.data.data.accessToken);
+      }
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
         setErrorMessage(error.response.data.message || "An error occurred");
@@ -204,6 +222,9 @@ const LoginSignUp: React.FC = () => {
             </Box>
           </Grid>
         </Grid>
+        <Dialog open={isDialogOpen} onClose={() => setIsDialogOpen(false)}>
+          {id && <Preferences id={id} onClose={handleClosePreferences}/>}
+        </Dialog>
       </Paper>
     </Container>
   );
