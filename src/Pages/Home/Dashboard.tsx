@@ -1,4 +1,5 @@
 import Header from "../../Component/Header/Header";
+import MotivationalPage from "../../Component/MotivationPage/MotivationPage";
 import { useAuth } from "../Auth/AuthContext";
 
 const Dashboard: React.FC = () => {
@@ -6,6 +7,7 @@ const Dashboard: React.FC = () => {
   return (
     <>
       <Header isAuthenticated={isAuthenticated} onLogout={logout} />
+      <MotivationalPage />
     </>
   );
 };
