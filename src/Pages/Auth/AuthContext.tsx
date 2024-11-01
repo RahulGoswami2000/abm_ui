@@ -6,8 +6,14 @@ import React, {
   ReactNode,
 } from "react";
 
+
+interface AuthContextType {
+  isAuthenticated: boolean;
+  login: () => void;
+  logout: () => void;
+}
 // Create the AuthContext with a default value (e.g., an empty object)
-const AuthContext = createContext({
+const AuthContext = createContext<AuthContextType>({
   isAuthenticated: false,
   login: () => {},
   logout: () => {},
@@ -27,7 +33,8 @@ type AuthProviderProps = {
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
     // Check localStorage for an existing auth state
-    return JSON.parse(localStorage.getItem("isAuthenticated") || "false");
+    const storedAuthState = localStorage.getItem("isAuthenticated");
+    return storedAuthState ? JSON.parse(storedAuthState) : false;
   });
 
   // Update localStorage when isAuthenticated changes

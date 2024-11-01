@@ -15,13 +15,16 @@ import {
   Dialog,
 } from "@mui/material";
 import Preferences from "../../Component/Preferences/Preferences";
+import { useAuth } from "./AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const API_BASE_URL = "http://localhost:8080";
 
 const LoginSignUp: React.FC = () => {
+  const {login} = useAuth();
   const [value, setValue] = useState(0);
   const [id, setUserId] = useState<number | null>(null);
-  const [showPreferences, setShowPreferences] = useState(false);
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -70,6 +73,8 @@ const LoginSignUp: React.FC = () => {
 
       if (value === 0) {
         localStorage.setItem("token", response.data.data.accessToken);
+        login();
+        navigate("/dashboard");
       }
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
@@ -223,7 +228,7 @@ const LoginSignUp: React.FC = () => {
           </Grid>
         </Grid>
         <Dialog open={isDialogOpen} onClose={() => setIsDialogOpen(false)}>
-          {id && <Preferences id={id} onClose={handleClosePreferences}/>}
+          {id && <Preferences id={id} onClose={handleClosePreferences} />}
         </Dialog>
       </Paper>
     </Container>
