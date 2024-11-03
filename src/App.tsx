@@ -4,6 +4,7 @@ import { useAuth } from "./Pages/Auth/AuthContext";
 import LoginSignUp from "./Pages/Auth/Signup";
 import PrivateRoute from "./Pages/Auth/PrivateRoute";
 import Dashboard from "./Pages/Home/Dashboard";
+import Profile from "./Pages/Profile/Profile";
 
 function App() {
   const { isAuthenticated } = useAuth();
@@ -19,6 +20,7 @@ function App() {
             </PrivateRoute>
           }
         />
+        <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
         <Route path="/" element={<Navigate to={isAuthenticated ? "/dashboard" : "/"} />} />
       </Routes>
     </BrowserRouter>
