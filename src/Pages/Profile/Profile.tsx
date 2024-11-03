@@ -11,39 +11,53 @@ const Profile: React.FC = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
+  const [userId, setUserId] = useState<number | null>(null);
 
   const API_BASE_URL = "http://localhost:8080";
-  useEffect(() => {
-    const fetchProfileData = async () => {
-      try {
-        const token = localStorage.getItem("token"); // Adjust if you use a different storage method
-        const response = await axios.get(`${API_BASE_URL}/me`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        const userData = response.data.data;
-        
-        setFirstName(userData.first_name);
-        setLastName(userData.last_name);
-        setEmail(userData.email);
-      } catch (error) {
-        console.error("Failed to fetch profile data:", error);
-      }
-    };
 
+  const fetchProfileData = async () => {
+    try {
+      const token = localStorage.getItem("token"); // Adjust if you use a different storage method
+      const response = await axios.get(`${API_BASE_URL}/me`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const userData = response.data.data;
+      setUserId(userData.user_id);
+      setFirstName(userData.first_name);
+      setLastName(userData.last_name);
+      setEmail(userData.email);
+    } catch (error) {
+      console.error("Failed to fetch profile data:", error);
+    }
+  };
+  useEffect(() => {
     fetchProfileData();
   }, []);
 
   const handleSave = async () => {
     try {
-      // Placeholder API endpoint
-      const response = await axios.put("/api/profile", {
-        firstName,
-        lastName,
-        email
-      });
+      if (!userId) {
+        console.error("User ID is not available");
+        return;
+      }
+
+      const token = localStorage.getItem("token");
+      const response = await axios.post(
+        `${API_BASE_URL}/update/${userId}`,
+        { first_name: firstName, last_name: lastName, email },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
       console.log("Profile updated:", response.data);
+
+      await fetchProfileData();
+      alert("Profile updated");
     } catch (error) {
       console.error("Failed to update profile:", error);
     }
