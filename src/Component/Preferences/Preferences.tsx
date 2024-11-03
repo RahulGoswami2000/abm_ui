@@ -30,7 +30,7 @@ const Preferences: React.FC<PreferenceProps> = ({ id, onClose }) => {
   useEffect(() => {
     const fetchWeedOptions = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/weed-list`);
+        const response = await axios.get(`https://abm-api-sutg.onrender.com/weed-list`);
 
         setWeedOptions(response.data.data); // Sets weedOptions as array of {weed_id, name}
       } catch (err) {
@@ -52,7 +52,7 @@ const Preferences: React.FC<PreferenceProps> = ({ id, onClose }) => {
   const handleWeedSave = async () => {
     if (selectedWeedId !== null) {
       try {
-        await axios.post(`http://localhost:8080/save-preferences/${id}`, null, {
+        await axios.post(`https://abm-api-sutg.onrender.com/save-preferences/${id}`, null, {
           params: { weed_id: selectedWeedId },
         });
         onClose();
