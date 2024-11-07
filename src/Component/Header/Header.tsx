@@ -55,7 +55,7 @@ const Header: React.FC<HeaderProps> = ({ isAuthenticated, onLogout }) => {
             </Button>
             <Button
               component={Link}
-              to="/tasks"
+              to="/user-task"
               color="inherit"
               sx={{ "&:hover": { textDecoration: "underline" } }}
             >
