@@ -6,13 +6,15 @@ import PrivateRoute from "./Pages/Auth/PrivateRoute";
 import Dashboard from "./Pages/Home/Dashboard";
 import Profile from "./Pages/Profile/Profile";
 import ImageHoverTracker from "./Pages/UserTask/UserTask";
+import Home from "./Pages/Lander/Home";
 
 function App() {
   const { isAuthenticated } = useAuth();
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<LoginSignUp />}></Route>
+        <Route path="/" element={<Home />}></Route>
+        <Route path="/auth" element={<LoginSignUp />}></Route>
         <Route
           path="/dashboard"
           element={
