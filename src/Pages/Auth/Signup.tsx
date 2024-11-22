@@ -18,10 +18,10 @@ import Preferences from "../../Component/Preferences/Preferences";
 import { useAuth } from "./AuthContext";
 import { useNavigate } from "react-router-dom";
 
-const API_BASE_URL = "https://abm-api-sutg.onrender.com";
+const API_BASE_URL = "http://localhost:8080";
 
 const LoginSignUp: React.FC = () => {
-  const {login} = useAuth();
+  const { login } = useAuth();
   const [value, setValue] = useState(0);
   const [id, setUserId] = useState<number | null>(null);
   const navigate = useNavigate();
@@ -93,11 +93,10 @@ const LoginSignUp: React.FC = () => {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        background: "#ffffff",
-        padding: 2,
+        padding: 2, // No background color
       }}
     >
-      <Paper elevation={6} sx={{ padding: 4, width: "100%", borderRadius: 2 }}>
+      <Paper elevation={10} sx={{ padding: 4, width: "100%", borderRadius: 3 }}>
         <Tabs
           value={value}
           onChange={handleChange}
@@ -107,9 +106,8 @@ const LoginSignUp: React.FC = () => {
           <Tab label="Login" sx={{ fontWeight: "bold" }} />
           <Tab label="Sign Up" sx={{ fontWeight: "bold" }} />
         </Tabs>
-
-        <Grid container spacing={2}>
-          {/* Left Side: Informational Text */}
+        <Grid container spacing={4} sx={{ padding: 2 }}>
+          {/* Informational Section */}
           <Grid
             item
             xs={12}
@@ -118,27 +116,24 @@ const LoginSignUp: React.FC = () => {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              background: "#ffffff",
-              color: "#000",
               padding: 3,
               borderTopLeftRadius: 8,
               borderBottomLeftRadius: 8,
-              boxShadow: "0 2px 10px rgba(0, 0, 0, 0)",
             }}
           >
             <Box sx={{ textAlign: "center" }}>
-              <Typography variant="h4" sx={{ fontWeight: "bold" }}>
-                {value === 0 ? "Welcome!" : "Join Us!"}
+              <Typography variant="h4" sx={{ fontWeight: "bold", mb: 1 }}>
+                {value === 0 ? "Welcome Back!" : "Create Your Account"}
               </Typography>
               <Typography variant="body1" sx={{ mt: 2 }}>
                 {value === 0
-                  ? "Please login to access your dashboard. Stay connected and manage your account easily."
-                  : "Create an account to start managing your tasks easily."}
+                  ? "Access your dashboard and manage your tasks easily."
+                  : "Sign up to get started and unlock all features."}
               </Typography>
             </Box>
           </Grid>
 
-          {/* Right Side: Login or Signup Form */}
+          {/* Form Section */}
           <Grid item xs={12} md={6}>
             <Box
               component="form"
@@ -147,9 +142,8 @@ const LoginSignUp: React.FC = () => {
                 display: "flex",
                 flexDirection: "column",
                 gap: 2,
-                backgroundColor: "#ffffff",
-                borderRadius: 2,
-                boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
+                borderRadius: 3,
+                boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
               }}
               onSubmit={(e) => {
                 e.preventDefault();
@@ -160,26 +154,32 @@ const LoginSignUp: React.FC = () => {
                 {value === 0 ? "Login" : "Sign Up"}
               </Typography>
               {value === 1 && (
-                <>
-                  <TextField
-                    label="First Name"
-                    variant="outlined"
-                    name="first_name"
-                    value={formData.first_name}
-                    onChange={handleInputChange}
-                    fullWidth
-                    required
-                  />
-                  <TextField
-                    label="Last Name"
-                    variant="outlined"
-                    name="last_name"
-                    value={formData.last_name}
-                    onChange={handleInputChange}
-                    fullWidth
-                    required
-                  />
-                </>
+                <Grid container spacing={2}>
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      label="First Name"
+                      variant="outlined"
+                      name="first_name"
+                      value={formData.first_name}
+                      onChange={handleInputChange}
+                      fullWidth
+                      required
+                      sx={{ "& .MuiOutlinedInput-root": { borderRadius: 8 } }}
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      label="Last Name"
+                      variant="outlined"
+                      name="last_name"
+                      value={formData.last_name}
+                      onChange={handleInputChange}
+                      fullWidth
+                      required
+                      sx={{ "& .MuiOutlinedInput-root": { borderRadius: 8 } }}
+                    />
+                  </Grid>
+                </Grid>
               )}
               <TextField
                 label="Email"
@@ -189,6 +189,7 @@ const LoginSignUp: React.FC = () => {
                 onChange={handleInputChange}
                 fullWidth
                 required
+                sx={{ "& .MuiOutlinedInput-root": { borderRadius: 8 } }}
               />
               <TextField
                 label="Password"
@@ -199,6 +200,7 @@ const LoginSignUp: React.FC = () => {
                 onChange={handleInputChange}
                 fullWidth
                 required
+                sx={{ "& .MuiOutlinedInput-root": { borderRadius: 8 } }}
               />
               {errorMessage && (
                 <Typography color="error" variant="body2">
@@ -209,7 +211,13 @@ const LoginSignUp: React.FC = () => {
                 variant="contained"
                 color="primary"
                 fullWidth
-                sx={{ mt: 2 }}
+                sx={{
+                  mt: 2,
+                  borderRadius: 8,
+                  padding: "12px",
+                  background: "#1976D2",
+                  color: "#fff",
+                }}
                 type="submit"
               >
                 {value === 0 ? "Log In" : "Sign Up"}
@@ -219,6 +227,13 @@ const LoginSignUp: React.FC = () => {
                 <Link
                   href="#"
                   color="primary"
+                  sx={{
+                    textDecoration: "none",
+                    "&:hover": {
+                      textDecoration: "underline",
+                      color: "#1565C0",
+                    },
+                  }}
                   onClick={() => setValue(value === 0 ? 1 : 0)}
                 >
                   {value === 0 ? "Sign up" : "Log in"}
