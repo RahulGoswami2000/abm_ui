@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { useAuth } from "../Auth/AuthContext";
 import Header from "../../Component/Header/Header";
@@ -39,11 +39,11 @@ const imagesLeft = [
   "31C.jpg",
   "32C.jpg",
   "33C.jpg",
-  "34C.jpg",
-  "35C.jpg",
-  "36C.jpg",
-  "37C.jpg",
-  "38C.jpg",
+  "34C2.jpg",
+  "35C2.jpg",
+  "36C2.jpg",
+  "37C2.jpg",
+  "38C2.jpg",
   "39C.jpg",
   "40C.jpg",
   "41C.jpg",
@@ -112,6 +112,8 @@ const imagesRight = [
 ];
 
 const ImageHoverTracker: React.FC = () => {
+  const API_BASE_URL = "http://localhost:8080";
+
   const { isAuthenticated, logout } = useAuth();
   const [hoverTimeImage1, setHoverTimeImage1] = useState<number>(0);
   const [hoverTimeImage2, setHoverTimeImage2] = useState<number>(0);
@@ -221,38 +223,47 @@ const ImageHoverTracker: React.FC = () => {
   // Function to save hover times and first hover sides to the database
   const saveHoverTimes = async () => {
     try {
-      await axios.post("/api/hoverTimes", {
-        image1Time: hoverTimeImage1,
-        image2Time: hoverTimeImage2,
-        firstHoverSideImage1,
-        firstHoverSideImage2,
-      });
+      const token = localStorage.getItem("token");
+      await axios.post(
+        `${API_BASE_URL}/task/create`,
+        {
+          time_on_negative: hoverTimeImage1/360,
+          time_on_positive: hoverTimeImage2/360,
+          firstHoverSideImage1,
+          firstHoverSideImage2,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
     } catch (error) {
       console.error("Error saving hover times", error);
     }
   };
 
   // Save hover times on component update/unmount
-  useEffect(() => {
-    // Async function inside useEffect
-    const save = async () => {
-      await saveHoverTimes();
-    };
+  // useEffect(() => {
+  //   // Async function inside useEffect
+  //   const save = async () => {
+  //     await saveHoverTimes();
+  //   };
 
-    // Call the async function
-    save();
+  //   // Call the async function
+  //   save();
 
-    // Cleanup function
-    return () => {
-      // Optionally save again before unmount (if needed)
-      save();
-    };
-  }, [
-    hoverTimeImage1,
-    hoverTimeImage2,
-    firstHoverSideImage1,
-    firstHoverSideImage2,
-  ]); // Runs when hover times or sides change
+  //   // Cleanup function
+  //   return () => {
+  //     // Optionally save again before unmount (if needed)
+  //     save();
+  //   };
+  // }, [
+  //   hoverTimeImage1,
+  //   hoverTimeImage2,
+  //   firstHoverSideImage1,
+  //   firstHoverSideImage2,
+  // ]); // Runs when hover times or sides change
 
   // Handle mouse movement for image 1
   const handleMouseMoveImage1 = (event: React.MouseEvent) => {
@@ -274,7 +285,7 @@ const ImageHoverTracker: React.FC = () => {
 
   const handleSubmit = async () => {
     try {
-      // await axios.post("/api/hoverTimes", hoverTimeImage1);
+      await saveHoverTimes();
       setCurrentBatchIndex((prevBatch) => prevBatch + 1);
       setCurrentIndex(0);
       alert("Hover data submitted successfully!");

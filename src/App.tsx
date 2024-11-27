@@ -7,6 +7,7 @@ import Dashboard from "./Pages/Home/Dashboard";
 import Profile from "./Pages/Profile/Profile";
 import ImageHoverTracker from "./Pages/UserTask/UserTask";
 import Home from "./Pages/Lander/Home";
+import Progress from "./Pages/Feedback/Progress";
 
 function App() {
   const { isAuthenticated } = useAuth();
@@ -28,6 +29,14 @@ function App() {
           element={
             <PrivateRoute>
               <Profile />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/progress"
+          element={
+            <PrivateRoute>
+              <Progress />
             </PrivateRoute>
           }
         />

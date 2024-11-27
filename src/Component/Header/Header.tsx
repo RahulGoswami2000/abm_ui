@@ -61,6 +61,14 @@ const Header: React.FC<HeaderProps> = ({ isAuthenticated, onLogout }) => {
             >
               Tasks
             </Button>
+            <Button
+              component={Link}
+              to="/progress"
+              color="inherit"
+              sx={{ "&:hover": { textDecoration: "underline" } }}
+            >
+              Progress
+            </Button>
             {isAuthenticated && (
               <>
                 <Button
