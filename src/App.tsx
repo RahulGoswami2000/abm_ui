@@ -9,6 +9,7 @@ import ImageHoverTracker from "./Pages/UserTask/UserTask";
 import Home from "./Pages/Lander/Home";
 import Progress from "./Pages/Feedback/Progress";
 import Rewards from "./Pages/Rewards/Rewards";
+import Tutorial from "./Pages/Tutorial/Tutorial";
 
 function App() {
   const { isAuthenticated } = useAuth();
@@ -46,6 +47,14 @@ function App() {
           element={
             <PrivateRoute>
               <Rewards />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/tutorial"
+          element={
+            <PrivateRoute>
+              <Tutorial />
             </PrivateRoute>
           }
         />
