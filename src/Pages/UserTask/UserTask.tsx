@@ -3,7 +3,7 @@ import axios from "axios";
 import { useAuth } from "../Auth/AuthContext";
 import Header from "../../Component/Header/Header";
 import "./ImageHoverTracker.css";
-import { Box, Button } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 
 const imagesLeft = [
   "1C.jpg",
@@ -227,8 +227,8 @@ const ImageHoverTracker: React.FC = () => {
       await axios.post(
         `${API_BASE_URL}/task/create`,
         {
-          time_on_negative: hoverTimeImage1/360,
-          time_on_positive: hoverTimeImage2/360,
+          time_on_negative: hoverTimeImage1 / 360,
+          time_on_positive: hoverTimeImage2 / 360,
           firstHoverSideImage1,
           firstHoverSideImage2,
         },
@@ -368,6 +368,7 @@ const ImageHoverTracker: React.FC = () => {
             // fullWidth
             disabled={currentIndex === 0}
             className="prev-button"
+            style={{ marginRight: "16px" }}
           >
             Previous
           </Button>
@@ -394,6 +395,10 @@ const ImageHoverTracker: React.FC = () => {
             </Button>
           )}
         </div>
+        <Typography variant="body1" sx={{ fontWeight: "bold", mb: 2 }} mt={2}>
+          Not sure how to do a task? Go to the <a href="/tutorial">tutorials</a>{" "}
+          and find out.
+        </Typography>
       </Box>
     </>
   );
