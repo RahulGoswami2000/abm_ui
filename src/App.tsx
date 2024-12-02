@@ -10,6 +10,7 @@ import Home from "./Pages/Lander/Home";
 import Progress from "./Pages/Feedback/Progress";
 import Rewards from "./Pages/Rewards/Rewards";
 import Tutorial from "./Pages/Tutorial/Tutorial";
+import CannabisSurvey from "./Pages/Auth/Survey";
 
 function App() {
   const { isAuthenticated } = useAuth();
@@ -18,6 +19,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />}></Route>
         <Route path="/auth" element={<LoginSignUp />}></Route>
+        <Route path="/survey" element={<CannabisSurvey />}></Route>
         <Route
           path="/dashboard"
           element={

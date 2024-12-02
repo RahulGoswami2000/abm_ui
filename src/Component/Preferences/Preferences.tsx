@@ -1,21 +1,9 @@
-import React, { useState, useEffect } from "react";
-import {
-  Container,
-  Box,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  Button,
-  Typography,
-  SelectChangeEvent,
-} from "@mui/material";
-import axios from "axios";
-
-interface WeedOption {
-  weed_id: number;
-  name: string;
-}
+import React, { useState } from "react";
+import { Container, Box, Button, Typography } from "@mui/material";
+import image1 from "../../assests/cannabis/3C.jpg";
+import image2 from "../../assests/cannabis/1C.jpg";
+import image3 from "../../assests/cannabis/2C.jpg";
+import { useNavigate } from "react-router-dom";
 
 interface PreferenceProps {
   id: number;
@@ -23,42 +11,25 @@ interface PreferenceProps {
 }
 
 const Preferences: React.FC<PreferenceProps> = ({ id, onClose }) => {
-  const [weedOptions, setWeedOptions] = useState<WeedOption[]>([]);
-  const [selectedWeedId, setSelectedWeedId] = useState<number | null>(null);
+  const [selectedImage, setSelectedImage] = useState<number | null>(null);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchWeedOptions = async () => {
-      try {
-        const response = await axios.get(`http://localhost:8080/weed-list`);
+  const imageSources = [image1, image2, image3];
 
-        setWeedOptions(response.data.data); // Sets weedOptions as array of {weed_id, name}
-      } catch (err) {
-        setError("Failed to load options. Please try again later.");
-      }
-    };
-
-    fetchWeedOptions();
-  }, [id]);
-
-  const handleWeedChange = (event: SelectChangeEvent<string>) => {
-    const selectedWeedName = event.target.value;
-    const selectedWeed = weedOptions.find(
-      (weed) => weed.name === selectedWeedName
-    );
-    setSelectedWeedId(selectedWeed ? selectedWeed.weed_id : null);
+  const handleImageSelect = (imageIndex: number) => {
+    setSelectedImage(imageIndex);
+    setError(""); // Clear error if a new image is selected
   };
 
-  const handleWeedSave = async () => {
-    if (selectedWeedId !== null) {
-      try {
-        await axios.post(`http://localhost:8080/save-preferences/${id}`, null, {
-          params: { weed_id: selectedWeedId },
-        });
-        onClose();
-      } catch (err) {
-        setError("Failed to save preference. Please try again later.");
-      }
+  const handleSave = () => {
+    if (selectedImage !== null) {
+      // Save selected image index to localStorage
+      localStorage.setItem(`preference`, selectedImage.toString());
+      navigate("/survey");
+      onClose();
+    } else {
+      setError("Please select an image before saving.");
     }
   };
 
@@ -76,35 +47,49 @@ const Preferences: React.FC<PreferenceProps> = ({ id, onClose }) => {
         }}
       >
         <Typography variant="h5" gutterBottom>
-          Select Your Weed Preference
+          Select Your Preference
         </Typography>
 
-        <FormControl fullWidth>
-          <InputLabel>Select Weed</InputLabel>
-          <Select
-            value={
-              selectedWeedId
-                ? weedOptions.find((weed) => weed.weed_id === selectedWeedId)
-                    ?.name
-                : ""
-            }
-            onChange={handleWeedChange}
-            label="Select Weed"
-          >
-            {weedOptions.map((weed) => (
-              <MenuItem key={weed.weed_id} value={weed.name}>
-                {weed.name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+        <Typography variant="body1" sx={{ mb: 2 }}>
+          Select style of cannabis images for the future task.
+        </Typography>
+
+        {/* Image Selection */}
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            gap: 2,
+            mt: 4,
+            mb: 4,
+          }}
+        >
+          {imageSources.map((src, index) => (
+            <Box
+              key={index}
+              sx={{
+                border:
+                  selectedImage === index ? "3px solid blue" : "1px solid gray",
+                borderRadius: 2,
+                overflow: "hidden",
+                cursor: "pointer",
+              }}
+              onClick={() => handleImageSelect(index)}
+            >
+              <img
+                src={src}
+                alt={`Option ${index + 1}`}
+                style={{ width: 100, height: 100, objectFit: "cover" }}
+              />
+            </Box>
+          ))}
+        </Box>
 
         <Button
-          onClick={handleWeedSave}
+          onClick={handleSave}
           variant="contained"
           fullWidth
           sx={{ mt: 2 }}
-          disabled={selectedWeedId === null}
         >
           Save
         </Button>
