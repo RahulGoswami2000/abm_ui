@@ -67,6 +67,7 @@ const LoginSignUp: React.FC = () => {
       console.log("Success:", response.data);
 
       if (value === 1) {
+        localStorage.setItem("user_id", response.data.data.user_id);
         setUserId(response.data.data.user_id);
         setIsDialogOpen(true); // Open dialog on successful signup
       }
