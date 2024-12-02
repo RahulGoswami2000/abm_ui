@@ -5,6 +5,8 @@ import { Box, TextField, Button, Typography, Paper, Grid } from "@mui/material";
 import axios from "axios";
 import Header from "../../Component/Header/Header";
 import { useAuth } from "../Auth/AuthContext";
+import { toast, ToastContainer } from "react-toastify"; // Import toast components
+import "react-toastify/dist/ReactToastify.css";
 
 const Profile: React.FC = () => {
   const { isAuthenticated, logout } = useAuth();
@@ -57,9 +59,10 @@ const Profile: React.FC = () => {
       console.log("Profile updated:", response.data);
 
       await fetchProfileData();
-      alert("Profile updated");
+      toast.success("Profile Updated!");
     } catch (error) {
       console.error("Failed to update profile:", error);
+      toast.error("Failed to update profile.");
     }
   };
 
@@ -131,6 +134,17 @@ const Profile: React.FC = () => {
           </Box>
         </Paper>
       </Box>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </>
   );
 };
