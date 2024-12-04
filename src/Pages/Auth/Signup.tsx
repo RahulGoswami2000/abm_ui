@@ -79,7 +79,14 @@ const LoginSignUp: React.FC = () => {
       }
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
-        setErrorMessage(error.response.data.message || "An error occurred");
+        if (error.response.status === 409) {
+          // Handle case where the email already exists (HTTP 409 Conflict)
+          setErrorMessage(
+            "This email is already registered."
+          );
+        } else {
+          setErrorMessage(error.response.data.message || "An error occurred");
+        }
       } else {
         setErrorMessage("An error occurred. Please try again.");
       }

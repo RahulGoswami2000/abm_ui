@@ -28,9 +28,17 @@ interface PieChartData {
 const Progress: React.FC = () => {
   const API_BASE_URL = "http://localhost:8080";
   const { isAuthenticated, logout } = useAuth();
+
   const [barChartData, setBarChartData] = useState<BarChartData[]>([]);
   const [pieChartData, setPieChartData] = useState<PieChartData[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [feedback, setFeedback] = useState<string | null>(null);
+  const [timeSpentFirst, setTimeSpentFirst] = useState<number>(0);
+  const [timeSpentSecond, setTimeSpentSecond] = useState<number>(0);
+  const [firstImageHovered, setFirstImageHovered] = useState<boolean | null>(
+    null
+  );
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isFeedbackLoading, setIsFeedbackLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchChartData = async () => {
@@ -42,7 +50,9 @@ const Progress: React.FC = () => {
           },
         });
         const data = response.data;
-        console.log(data);
+
+        localStorage.setItem("timeSpentFirst", data.data.timeOnNegative);
+        localStorage.setItem("timeSpentSecond", data.data.timeOnPositive);
 
         // Prepare Bar Chart data
         setBarChartData([
@@ -63,7 +73,52 @@ const Progress: React.FC = () => {
     };
 
     fetchChartData();
+
+    // Retrieve time data for feedback
+    const timeFirst = localStorage.getItem("timeSpentFirst");
+    const timeSecond = localStorage.getItem("timeSpentSecond");
+    const firstHovered = localStorage.getItem("firstHovered");
+
+    if (timeFirst) setTimeSpentFirst(Number(timeFirst));
+    if (timeSecond) setTimeSpentSecond(Number(timeSecond));
+    if (firstHovered) setFirstImageHovered(firstHovered === "true");
   }, []);
+
+  const generateFeedback = async () => {
+    setIsFeedbackLoading(true);
+
+    const inputPrompt = `
+      The user spent ${timeSpentFirst} seconds on the weed image and ${timeSpentSecond} seconds on the neutral image. Provide feedback on engagement.
+    `;
+
+    try {
+      const response = await axios.post(
+        "https://api.openai.com/v1/completions",
+        {
+          model: "gpt-3.5-turbo",
+          prompt: inputPrompt,
+          max_tokens: 150,
+        },
+        {
+          headers: {
+            Authorization: `Bearer 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`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const generatedResponse = response.data.choices[0]?.text?.trim();
+      setFeedback(
+        generatedResponse ||
+          "Sorry, we couldn't generate feedback at the moment."
+      );
+    } catch (error) {
+      console.error("Error fetching feedback:", error);
+      setFeedback("Failed to generate feedback. Please try again later.");
+    } finally {
+      setIsFeedbackLoading(false);
+    }
+  };
 
   const COLORS = ["#8884d8", "#82ca9d"];
 
@@ -74,6 +129,34 @@ const Progress: React.FC = () => {
         <h2 style={{ textAlign: "center", color: "#4a5cfb" }}>
           Progress Overview
         </h2>
+
+        {/* Feedback Section */}
+        <div className="feedback-section" style={{ marginBottom: "40px" }}>
+          <h3 style={{ textAlign: "center", color: "#4a5cfb" }}>Feedback</h3>
+          <button
+            onClick={generateFeedback}
+            style={{
+              display: "block",
+              margin: "10px auto",
+              padding: "10px 20px",
+              backgroundColor: "#4a5cfb",
+              color: "white",
+              border: "none",
+              borderRadius: "5px",
+              cursor: "pointer",
+            }}
+          >
+            Generate Feedback
+          </button>
+          {isFeedbackLoading ? (
+            <p style={{ textAlign: "center" }}>Loading feedback...</p>
+          ) : (
+            <p style={{ textAlign: "center" }}>
+              {feedback ||
+                "Click to receive personalized feedback."}
+            </p>
+          )}
+        </div>
 
         {isLoading ? (
           <div style={{ textAlign: "center" }}>Loading data...</div>

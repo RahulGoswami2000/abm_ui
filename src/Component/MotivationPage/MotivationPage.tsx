@@ -1,6 +1,12 @@
 import React from "react";
 import { Box, Typography, Card, CardMedia, Divider } from "@mui/material";
 import skyImage from "../../assests/mentalhealth.jpeg";
+import habit1 from "../../assests/habit 1.jpg";
+import habit2 from "../../assests/habit 2.jpg";
+import habit3 from "../../assests/habit 3.jpg";
+import habit4 from "../../assests/habit 4.jpg";
+import habit5 from "../../assests/habit 5.jpg";
+
 import {
   CartesianGrid,
   Line,
@@ -22,11 +28,11 @@ const MotivationalPage: React.FC = () => {
 
   // List of motivational image URLs (replace with URLs relevant to your theme)
   const images = [
-    `${skyImage}`,
-    "https://source.unsplash.com/random/800x600?motivation",
-    "https://source.unsplash.com/random/800x600?focus",
-    "https://source.unsplash.com/random/800x600?journey",
-    "https://source.unsplash.com/random/800x600?success",
+    `${habit1}`,
+    `${habit2}`,
+    `${habit3}`,
+    `${habit4}`,
+    `${habit5}`,
   ];
 
   const data = [

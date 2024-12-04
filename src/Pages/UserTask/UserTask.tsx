@@ -1,83 +1,67 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuth } from "../Auth/AuthContext";
 import Header from "../../Component/Header/Header";
 import "./ImageHoverTracker.css";
 import { Box, Button, Typography } from "@mui/material";
+import { toast, ToastContainer } from "react-toastify"; // Import toast components
+import "react-toastify/dist/ReactToastify.css";
 
-const imagesLeft = [
-  "1C.jpg",
-  "2C.jpg",
-  "3C.jpg",
-  "4C.jpg",
-  "5C.jpg",
-  "6C.jpg",
-  "7C.jpg",
-  "8C.jpg",
-  "9C.jpg",
-  "10C.jpg",
-  "11C.jpg",
-  "12C.jpg",
-  "13C.jpg",
-  "14C.jpg",
-  "15C.jpg",
-  "16C.jpg",
-  "17C.jpg",
-  "18C.jpg",
-  "19C.jpg",
-  "20C.jpg",
-  "21C.jpg",
-  "22C.jpg",
-  "23C.jpg",
-  "24C.jpg",
-  "25C.jpg",
-  "26C.jpg",
-  "27C.jpg",
-  "28C.jpg",
-  "29C.jpg",
-  "30C.jpg",
-  "31C.jpg",
-  "32C.jpg",
-  "33C.jpg",
-  "34C2.jpg",
-  "35C2.jpg",
-  "36C2.jpg",
-  "37C2.jpg",
-  "38C2.jpg",
-  "39C.jpg",
-  "40C.jpg",
-  "41C.jpg",
-  "42C.jpg",
-  "43C.jpg",
-  "44C.jpg",
-  "45C.jpg",
-  "46C.jpg",
-  "47C.jpg",
-  "48C.jpg",
-  "49C.jpg",
-  "50C.jpg",
-];
+const imageSets = {
+  0: [
+    "1C.jpg",
+    "2C.jpg",
+    "3C.jpg",
+    "4C.jpg",
+    "5C.jpg",
+    "6C.jpg",
+    "7C.jpg",
+    "8C.jpg",
+    "9C.jpg",
+    "10C.jpg",
+    "11C.jpg",
+    "12C.jpg",
+    "13C.jpg",
+    "14C.jpg",
+    "15C.jpg",
+  ],
+  1: [
+    "17C.jpg",
+    "18C.jpg",
+    "19C.jpg",
+    "20C.jpg",
+    "21C.jpg",
+    "22C.jpg",
+    "23C.jpg",
+    "24C.jpg",
+    "25C.jpg",
+    "26C.jpg",
+    "27C.jpg",
+    "28C.jpg",
+    "29C.jpg",
+    "30C.jpg",
+    "31C.jpg",
+  ],
+  2: [
+    "36C2.jpg",
+    "37C2.jpg",
+    "38C2.jpg",
+    "39C.jpg",
+    "40C.jpg",
+    "41C.jpg",
+    "42C.jpg",
+    "43C.jpg",
+    "44C.jpg",
+    "45C.jpg",
+    "46C.jpg",
+    "47C.jpg",
+    "48C.jpg",
+    "49C.jpg",
+    "50C.jpg",
+  ],
+};
 
 const imagesRight = [
-  "N1.JPG",
-  "N2.JPG",
-  "N3.JPG",
-  "N4.JPG",
-  "N5.JPG",
-  "N6.JPG",
-  "N7.JPG",
-  "N8.JPG",
-  "N9.JPG",
-  "N10.JPG",
-  "N11.JPG",
-  "N12.JPG",
-  "N13.JPG",
-  "N14.JPG",
-  "N15.JPG",
-  "N16.JPG",
-  "N17.JPG",
-  "N18.JPG",
-  "N19.JPG",
   "N20.JPG",
   "N21.JPG",
   "N22.JPG",
@@ -94,21 +78,21 @@ const imagesRight = [
   "N33.JPG",
   "N34.JPG",
   "N35.JPG",
-  "N36.JPG",
-  "N37.JPG",
-  "N38.JPG",
-  "N39.JPG",
-  "N40.JPG",
-  "N41.JPG",
-  "N42.JPG",
-  "N43.JPG",
-  "N44.JPG",
-  "N45.JPG",
-  "N46.JPG",
-  "N47.JPG",
-  "N48.JPG",
-  "N49.JPG",
-  "N50.JPG",
+  // "N36.JPG",
+  // "N37.JPG",
+  // "N38.JPG",
+  // "N39.JPG",
+  // "N40.JPG",
+  // "N41.JPG",
+  // "N42.JPG",
+  // "N43.JPG",
+  // "N44.JPG",
+  // "N45.JPG",
+  // "N46.JPG",
+  // "N47.JPG",
+  // "N48.JPG",
+  // "N49.JPG",
+  // "N50.JPG",
 ];
 
 const ImageHoverTracker: React.FC = () => {
@@ -121,6 +105,13 @@ const ImageHoverTracker: React.FC = () => {
   const [currentBatchIndex, setCurrentBatchIndex] = useState(0);
   const [isHoveringImage1, setIsHoveringImage1] = useState(false);
   const [isHoveringImage2, setIsHoveringImage2] = useState(false);
+  const [imagesLeft, setImagesLeft] = useState<string[]>([]);
+  const [isLastImageOfBatch, setIsLastImageOfBatch] = useState(false);
+  const [isLastBatch, setIsLastBatch] = useState(false);
+  const [isLastBatchSubmitted, setIsLastBatchSubmitted] = useState(false);
+  const [totalHoverTimeImage1, setTotalHoverTimeImage1] = useState<number>(0);
+  const [totalHoverTimeImage2, setTotalHoverTimeImage2] = useState<number>(0);
+
   const [hoverStartTimeImage1, setHoverStartTimeImage1] = useState<
     number | null
   >(null);
@@ -142,6 +133,17 @@ const ImageHoverTracker: React.FC = () => {
     string | null
   >(null);
 
+  useEffect(() => {
+    const preference = parseInt(localStorage.getItem("preference")!);
+    const selectedSet = imageSets[preference as keyof typeof imageSets] || [];
+    if (preference === 0 || preference === 1 || preference === 2) {
+      setImagesLeft(imageSets[preference]);
+    } else {
+      console.error("Invalid preference value in local storage");
+      setImagesLeft([]); // Default to an empty array if preference is invalid
+    }
+  }, []);
+
   // Handle mouse enter and leave for image 1
   const handleMouseEnterImage1 = (event: React.MouseEvent) => {
     const rect = event.currentTarget.getBoundingClientRect();
@@ -159,9 +161,8 @@ const ImageHoverTracker: React.FC = () => {
   };
   const handleMouseLeaveImage1 = () => {
     if (hoverStartTimeImage1 !== null) {
-      setHoverTimeImage1(
-        (prevTime) => prevTime + (Date.now() - hoverStartTimeImage1)
-      );
+      const timeSpent = Date.now() - hoverStartTimeImage1;
+      setHoverTimeImage1((prevTime) => prevTime + timeSpent);
       setHoverStartTimeImage1(null);
     }
     setIsHoveringImage1(false); // Set hover state to false
@@ -184,9 +185,8 @@ const ImageHoverTracker: React.FC = () => {
   };
   const handleMouseLeaveImage2 = () => {
     if (hoverStartTimeImage2 !== null) {
-      setHoverTimeImage2(
-        (prevTime) => prevTime + (Date.now() - hoverStartTimeImage2)
-      );
+      const timeSpent = Date.now() - hoverStartTimeImage2;
+      setHoverTimeImage2((prevTime) => prevTime + timeSpent);
       setHoverStartTimeImage2(null);
     }
     setIsHoveringImage2(false); // Set hover state to false
@@ -243,28 +243,6 @@ const ImageHoverTracker: React.FC = () => {
     }
   };
 
-  // Save hover times on component update/unmount
-  // useEffect(() => {
-  //   // Async function inside useEffect
-  //   const save = async () => {
-  //     await saveHoverTimes();
-  //   };
-
-  //   // Call the async function
-  //   save();
-
-  //   // Cleanup function
-  //   return () => {
-  //     // Optionally save again before unmount (if needed)
-  //     save();
-  //   };
-  // }, [
-  //   hoverTimeImage1,
-  //   hoverTimeImage2,
-  //   firstHoverSideImage1,
-  //   firstHoverSideImage2,
-  // ]); // Runs when hover times or sides change
-
   // Handle mouse movement for image 1
   const handleMouseMoveImage1 = (event: React.MouseEvent) => {
     const rect = event.currentTarget.getBoundingClientRect(); // Get image's position relative to the page
@@ -283,12 +261,36 @@ const ImageHoverTracker: React.FC = () => {
     });
   };
 
+  useEffect(() => {
+    const lastImageIndex = currentBatchLeft.length - 1;
+    const lastBatchIndex = totalBatches - 1;
+
+    // Check if we're on the last image of the current batch
+    if (currentIndex === lastImageIndex) {
+      setIsLastImageOfBatch(true);
+    } else {
+      setIsLastImageOfBatch(false);
+    }
+
+    // Check if we're on the last batch
+    if (currentBatchIndex === lastBatchIndex) {
+      setIsLastBatch(true);
+    } else {
+      setIsLastBatch(false);
+    }
+  }, [currentIndex, currentBatchLeft.length, currentBatchIndex, totalBatches]);
+
   const handleSubmit = async () => {
     try {
       await saveHoverTimes();
-      setCurrentBatchIndex((prevBatch) => prevBatch + 1);
-      setCurrentIndex(0);
-      alert("Hover data submitted successfully!");
+
+      if (isLastImageOfBatch && isLastBatch) {
+        setIsLastBatchSubmitted(true);
+      } else {
+        setCurrentBatchIndex((prevBatch) => prevBatch + 1);
+        setCurrentIndex(0);
+      }
+      toast.success("Data submitted successfully!");
     } catch (error) {
       console.error("Error submitting hover data", error);
     }
@@ -360,46 +362,65 @@ const ImageHoverTracker: React.FC = () => {
         )}
       </div>
       <Box mt={3} textAlign="center">
-        <div className="controls">
-          <Button
-            onClick={handlePrevious}
-            color="primary"
-            variant="contained"
-            // fullWidth
-            disabled={currentIndex === 0}
-            className="prev-button"
-            style={{ marginRight: "16px" }}
-          >
-            Previous
-          </Button>
-          {currentIndex < currentBatchLeft.length - 1 ? (
-            <Button
-              onClick={handleNext}
-              color="primary"
-              variant="contained"
-              // fullWidth
-              disabled={currentIndex >= imagesLeft.length - 1}
-              className="next-button"
-            >
-              Next
-            </Button>
+        <div
+          className="controls"
+          style={{ display: "flex", justifyContent: "center", gap: "16px" }}
+        >
+          {isLastBatchSubmitted ? (
+            <Typography variant="h6" sx={{ mt: 2 }}>
+              Refresh to do the task again.
+            </Typography>
           ) : (
-            <Button
-              onClick={handleSubmit}
-              color="primary"
-              variant="contained"
-              // fullWidth
-              className="submit-button"
-            >
-              Submit
-            </Button>
+            <>
+              {currentIndex > 0 && (
+                <Button
+                  onClick={handlePrevious}
+                  color="primary"
+                  variant="contained"
+                  style={{ marginRight: "16px", width: "120px" }}
+                >
+                  Previous
+                </Button>
+              )}
+              {isLastImageOfBatch ? (
+                <Button
+                  onClick={handleSubmit}
+                  color="primary"
+                  variant="contained"
+                  style={{ width: "120px" }}
+                >
+                  Submit
+                </Button>
+              ) : (
+                <Button
+                  onClick={handleNext}
+                  color="primary"
+                  variant="contained"
+                  style={{ width: "120px" }}
+                >
+                  Next
+                </Button>
+              )}
+            </>
           )}
         </div>
+
         <Typography variant="body1" sx={{ fontWeight: "bold", mb: 2 }} mt={2}>
           Not sure how to do a task? Go to the <a href="/tutorial">tutorials</a>{" "}
           and find out.
         </Typography>
       </Box>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </>
   );
 };

@@ -81,7 +81,7 @@ const Rewards: React.FC = () => {
           </div>
         ) : (
           <div className="error-message">
-            Oops! We couldn't load your rewards. Please try again later.
+            Oops! You dont have any task completed. Please try again later.
           </div>
         )}
       </div>
