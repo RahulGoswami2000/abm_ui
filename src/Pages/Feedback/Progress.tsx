@@ -92,16 +92,15 @@ const Progress: React.FC = () => {
     `;
 
     try {
+      const token = localStorage.getItem("token");
       const response = await axios.post(
-        "https://api.openai.com/v1/completions",
+        "http://localhost:8080/get-feedback",
         {
-          model: "gpt-3.5-turbo",
           prompt: inputPrompt,
-          max_tokens: 150,
         },
         {
           headers: {
-            Authorization: `Bearer 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`,
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         }
@@ -152,8 +151,7 @@ const Progress: React.FC = () => {
             <p style={{ textAlign: "center" }}>Loading feedback...</p>
           ) : (
             <p style={{ textAlign: "center" }}>
-              {feedback ||
-                "Click to receive personalized feedback."}
+              {feedback || "Click to receive personalized feedback."}
             </p>
           )}
         </div>
