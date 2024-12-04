@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, {
   createContext,
   useContext,
@@ -5,7 +6,6 @@ import React, {
   useEffect,
   ReactNode,
 } from "react";
-
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -31,6 +31,7 @@ type AuthProviderProps = {
 
 // AuthProvider component
 export const AuthProvider = ({ children }: AuthProviderProps) => {
+  const API_BASE_URL = "http://localhost:8080";
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
     // Check localStorage for an existing auth state
     const storedAuthState = localStorage.getItem("isAuthenticated");
@@ -43,7 +44,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   }, [isAuthenticated]);
 
   const login = () => setIsAuthenticated(true);
-  const logout = () => setIsAuthenticated(false);
+  const logout = async () => {
+    try {
+      localStorage.removeItem("token");
+      setIsAuthenticated(false);
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
+  };
 
   return (
     <AuthContext.Provider value={{ isAuthenticated, login, logout }}>

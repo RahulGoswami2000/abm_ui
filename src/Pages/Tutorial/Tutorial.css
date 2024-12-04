@@ -1,0 +1,211 @@
+/* Overall Layout */
+.tutorial-page {
+  font-family: Arial, sans-serif;
+  color: #333;
+  padding: 20px;
+  line-height: 1.6;
+}
+
+.welcome-section {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.welcome-section h1 {
+  color: #4a5cfb;
+  font-size: 2.4rem;
+}
+
+.content-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.video-box {
+  width: 90%;
+  max-width: 800px;
+}
+
+.tutorial-video {
+  width: 100%;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.video-caption {
+  margin-top: 10px;
+  font-size: 0.9rem;
+  text-align: center;
+  color: #666;
+}
+
+/* Guide Section */
+.guide-section {
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  margin: 40px auto;
+  width: 90%;
+  max-width: 800px;
+}
+
+.guide-section h2 {
+  font-size: 1.8rem;
+  color: #4a5cfb;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.steps-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.step {
+  background: #eef2f3;
+  padding: 15px 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
+}
+
+.step.open {
+  background: #dde6f3;
+}
+
+.step-title {
+  font-size: 1.2rem;
+  color: #4a5cfb;
+  margin: 0;
+}
+
+.step-description {
+  margin-top: 10px;
+  font-size: 1rem;
+  color: #555;
+}
+
+/* Help Section */
+.help-section {
+  background: #f9f9f9;
+  padding: 20px;
+  text-align: center;
+  border-radius: 10px;
+  margin-top: 20px;
+}
+
+.help-section h2 {
+  color: #4a5cfb;
+  font-size: 1.5rem;
+}
+
+.help-section p {
+  font-size: 1rem;
+  margin: 10px 0;
+  color: #666;
+}
+
+.help-button {
+  background-color: #4a5cfb;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.help-button:hover {
+  background-color: #3949ab;
+}
+
+/* Modal */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+
+.modal-content h2 {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  color: #4a5cfb;
+  text-align: center;
+}
+
+.modal-content .close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 1.5rem;
+  color: #999;
+  cursor: pointer;
+}
+
+.modal-content .close:hover {
+  color: #333;
+}
+
+/* Form */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  color: #333;
+  font-weight: bold;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.form-group textarea {
+  resize: none;
+}
+
+.submit-button {
+  width: 100%;
+  padding: 10px;
+  background-color: #4a5cfb;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
+  background-color: #3949ab;
+}
