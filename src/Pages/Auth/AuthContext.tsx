@@ -31,7 +31,7 @@ type AuthProviderProps = {
 
 // AuthProvider component
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-  const API_BASE_URL = "http://localhost:8080";
+  const API_BASE_URL = "https://abm-api-sutg.onrender.com";
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
     // Check localStorage for an existing auth state
     const storedAuthState = localStorage.getItem("isAuthenticated");

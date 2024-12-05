@@ -26,7 +26,7 @@ interface PieChartData {
 }
 
 const Progress: React.FC = () => {
-  const API_BASE_URL = "http://localhost:8080";
+  const API_BASE_URL = "https://abm-api-sutg.onrender.com";
   const { isAuthenticated, logout } = useAuth();
 
   const [barChartData, setBarChartData] = useState<BarChartData[]>([]);
@@ -94,7 +94,7 @@ const Progress: React.FC = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
-        "http://localhost:8080/get-feedback",
+        "https://abm-api-sutg.onrender.com/get-feedback",
         {
           prompt: inputPrompt,
         },

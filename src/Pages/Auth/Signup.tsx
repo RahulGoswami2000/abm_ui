@@ -18,7 +18,7 @@ import Preferences from "../../Component/Preferences/Preferences";
 import { useAuth } from "./AuthContext";
 import { useNavigate } from "react-router-dom";
 
-const API_BASE_URL = "http://localhost:8080";
+const API_BASE_URL = "https://abm-api-sutg.onrender.com";
 
 const LoginSignUp: React.FC = () => {
   const { login } = useAuth();
