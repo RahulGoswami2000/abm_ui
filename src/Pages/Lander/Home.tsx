@@ -2,9 +2,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import image from "../../assests/healthy.jpg";
-import { motion } from 'framer-motion';
+import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -14,7 +13,15 @@ const Container = styled.div`
   padding: 20px;
   background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
   color: #343a40;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
+`;
+
+const CenteredContentWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 `;
 
 const HeaderBar = styled.header`
@@ -121,7 +128,7 @@ const Home: React.FC = () => {
   return (
     <Container>
       <HeaderBar>
-        <HeaderTitle>My Awesome Website</HeaderTitle>
+        <HeaderTitle>MindMouse</HeaderTitle>
         <LoginButton onClick={handleClickLogin}>Login</LoginButton>
       </HeaderBar>
       <HeroSection>
@@ -130,25 +137,32 @@ const Home: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
         >
-          Welcome to Our Amazing Platform
+          Welcome to MindMouse, supporting substance use disorder!
         </AnimatedHeader>
         <AnimatedImage
           src={image}
           alt="Example Image"
           style={{
-            width: '100%',
-            maxWidth: '600px',
-            margin: '24px auto',
-            borderRadius: '16px',
-            boxShadow: '0 8px 16px rgba(0, 0, 0, 0.1)',
+            width: "100%",
+            maxWidth: "600px",
+            margin: "24px auto",
+            borderRadius: "16px",
+            boxShadow: "0 8px 16px rgba(0, 0, 0, 0.1)",
           }}
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.3 }}
         />
-        <Content>
-          Experience an intuitive and seamless journey through our platform. Learn how we can make a difference in your everyday life.
-        </Content>
+        <CenteredContentWrapper>
+          <Content>
+            We are dedicated to supporting individuals and communities affected
+            by substance use disorder. By combining education, empathy, and
+            community support, we aim to raise awareness and provide helpful
+            resources that empower people on their recovery journeys. This page
+            is designed to foster understanding, reduce stigma, and encourage
+            individuals to seek the help they need.
+          </Content>
+        </CenteredContentWrapper>
         <AnimatedButton
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -163,14 +177,16 @@ const Home: React.FC = () => {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
             style={{
-              marginTop: '24px',
-              padding: '20px',
-              border: '1px solid #e2e8f0',
-              borderRadius: '8px',
-              backgroundColor: '#f7fafc',
+              marginTop: "24px",
+              padding: "20px",
+              border: "1px solid #e2e8f0",
+              borderRadius: "8px",
+              backgroundColor: "#f7fafc",
             }}
           >
-            Here is more detailed information about what we offer and how it can help you achieve your goals.
+            We help people to get rid of the substance use habits and pursue
+            them to look at the positive aspect. Go to tutorials to find out
+            how!
           </motion.div>
         )}
       </HeroSection>

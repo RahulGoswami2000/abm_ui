@@ -6,6 +6,7 @@ import "./ImageHoverTracker.css";
 import { Box, Button, Typography } from "@mui/material";
 import { toast, ToastContainer } from "react-toastify"; // Import toast components
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
 
 const imageSets = {
   0: [
@@ -109,8 +110,7 @@ const ImageHoverTracker: React.FC = () => {
   const [isLastImageOfBatch, setIsLastImageOfBatch] = useState(false);
   const [isLastBatch, setIsLastBatch] = useState(false);
   const [isLastBatchSubmitted, setIsLastBatchSubmitted] = useState(false);
-  const [totalHoverTimeImage1, setTotalHoverTimeImage1] = useState<number>(0);
-  const [totalHoverTimeImage2, setTotalHoverTimeImage2] = useState<number>(0);
+  const navigate = useNavigate();
 
   const [hoverStartTimeImage1, setHoverStartTimeImage1] = useState<
     number | null
@@ -195,6 +195,7 @@ const ImageHoverTracker: React.FC = () => {
   const handleNext = () => {
     if (currentIndex < currentBatchLeft.length - 1) {
       setCurrentIndex((prevIndex) => prevIndex + 1);
+      toast.info("Next image loaded!");
     }
   };
 
@@ -291,6 +292,7 @@ const ImageHoverTracker: React.FC = () => {
         setCurrentIndex(0);
       }
       toast.success("Data submitted successfully!");
+      navigate("/rewards");
     } catch (error) {
       console.error("Error submitting hover data", error);
     }
