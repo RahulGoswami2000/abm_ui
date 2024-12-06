@@ -87,9 +87,7 @@ const Progress: React.FC = () => {
   const generateFeedback = async () => {
     setIsFeedbackLoading(true);
 
-    const inputPrompt = `
-      The user spent ${timeSpentFirst} seconds on the weed image and ${timeSpentSecond} seconds on the neutral image. Provide feedback on engagement.
-    `;
+    const inputPrompt = `The user spent ${timeSpentFirst} seconds on the weed image and ${timeSpentSecond} seconds on the neutral image. Provide feedback on engagement.`;
 
     try {
       const token = localStorage.getItem("token");
@@ -105,7 +103,6 @@ const Progress: React.FC = () => {
           },
         }
       );
-
       const generatedResponse = response.data.choices[0]?.text?.trim();
       setFeedback(
         generatedResponse ||
