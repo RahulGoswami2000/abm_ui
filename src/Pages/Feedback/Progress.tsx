@@ -56,13 +56,13 @@ const Progress: React.FC = () => {
 
         // Prepare Bar Chart data
         setBarChartData([
-          { name: "Negative", minutes: data.data.timeOnNegative },
+          { name: "Cannabis cue", minutes: data.data.timeOnNegative },
           { name: "Neutral", minutes: data.data.timeOnPositive },
         ]);
 
         // Prepare Pie Chart data
         setPieChartData([
-          { name: "Negative", value: data.data.negativePercentage },
+          { name: "Cannabis cue", value: data.data.negativePercentage },
           { name: "Neutral", value: data.data.positivePercentage },
         ]);
       } catch (error) {
