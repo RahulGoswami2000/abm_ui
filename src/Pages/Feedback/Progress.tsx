@@ -87,7 +87,7 @@ const Progress: React.FC = () => {
   const generateFeedback = async () => {
     setIsFeedbackLoading(true);
 
-    const inputPrompt = `The user spent ${timeSpentFirst} seconds on the weed image and ${timeSpentSecond} seconds on the neutral image. Provide feedback on engagement.`;
+    const inputPrompt = `The user spent ${timeSpentFirst} seconds on the weed image and ${timeSpentSecond} seconds on the neutral image. Provide feedback on engagement and suggestions for improvement to user as how they can focus on positive aspect.`;
 
     try {
       const token = localStorage.getItem("token");
@@ -103,7 +103,11 @@ const Progress: React.FC = () => {
           },
         }
       );
-      const generatedResponse = response.data.choices[0]?.text?.trim();
+      const data = response.data.data;
+
+      const choices = JSON.parse(data).choices;
+
+      const generatedResponse = choices?.[0]?.message?.content;
       setFeedback(
         generatedResponse ||
           "Sorry, we couldn't generate feedback at the moment."
@@ -144,13 +148,50 @@ const Progress: React.FC = () => {
           >
             Generate Feedback
           </button>
-          {isFeedbackLoading ? (
-            <p style={{ textAlign: "center" }}>Loading feedback...</p>
-          ) : (
-            <p style={{ textAlign: "center" }}>
-              {feedback || "Click to receive personalized feedback."}
-            </p>
-          )}
+          <div style={{ textAlign: "center", padding: "20px" }}>
+            {isFeedbackLoading ? (
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
+              >
+                <div
+                  className="loading-spinner"
+                  style={{ marginBottom: "10px" }}
+                ></div>
+                <p style={{ fontSize: "1.2rem", color: "#4a5cfb" }}>
+                  Generating feedback, please wait...
+                </p>
+              </div>
+            ) : feedback ? (
+              <div
+                style={{
+                  backgroundColor: "#f9f9f9",
+                  border: "1px solid #e0e0e0",
+                  borderRadius: "8px",
+                  padding: "15px 20px",
+                  boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                  maxWidth: "600px",
+                  margin: "0 auto",
+                  textAlign: "left",
+                  color: "#333",
+                }}
+              >
+                <h3 style={{ color: "#4a5cfb", marginBottom: "10px" }}>
+                  Personalized Feedback
+                </h3>
+                <p style={{ fontSize: "1rem", lineHeight: "1.6" }}>
+                  {feedback}
+                </p>
+              </div>
+            ) : (
+              <div style={{ padding: "20px", fontSize: "1rem", color: "#666" }}>
+                Click the button above to receive personalized feedback.
+              </div>
+            )}
+          </div>
         </div>
 
         {isLoading ? (
