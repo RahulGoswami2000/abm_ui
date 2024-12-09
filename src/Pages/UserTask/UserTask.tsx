@@ -6,58 +6,59 @@ import "./ImageHoverTracker.css";
 import { Box, Button, Typography } from "@mui/material";
 import { toast, ToastContainer } from "react-toastify"; // Import toast components
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
 
 const imageSets = {
   0: [
-    "1C.jpg",
-    "2C.jpg",
     "3C.jpg",
-    "4C.jpg",
-    "5C.jpg",
-    "6C.jpg",
-    "7C.jpg",
-    "8C.jpg",
-    "9C.jpg",
-    "10C.jpg",
-    "11C.jpg",
-    "12C.jpg",
-    "13C.jpg",
-    "14C.jpg",
-    "15C.jpg",
-  ],
-  1: [
-    "17C.jpg",
-    "18C.jpg",
-    "19C.jpg",
-    "20C.jpg",
-    "21C.jpg",
-    "22C.jpg",
-    "23C.jpg",
     "24C.jpg",
-    "25C.jpg",
+    "24CP.jpg",
     "26C.jpg",
-    "27C.jpg",
-    "28C.jpg",
-    "29C.jpg",
-    "30C.jpg",
     "31C.jpg",
-  ],
-  2: [
+    "34C2.jpg",
+    "35C2.jpg",
     "36C2.jpg",
-    "37C2.jpg",
     "38C2.jpg",
-    "39C.jpg",
     "40C.jpg",
     "41C.jpg",
     "42C.jpg",
     "43C.jpg",
     "44C.jpg",
     "45C.jpg",
-    "46C.jpg",
-    "47C.jpg",
+  ],
+  1: [
+    "1C.jpg",
+    "4C.jpg",
+    "5C.jpg",
+    "6C.jpg",
+    "9C.jpg",
+    "11C.jpg",
+    "14C.jpg",
+    "16C.jpg",
+    "17C.jpg",
+    "18C.jpg",
+    "19C.jpg",
+    "20C.jpg",
+    "21C.jpg",
+    "22C.jpg",
+    "25C.jpg",
+  ],
+  2: [
+    "2C.jpg",
+    "7C .jpg",
+    "8C.jpg",
+    "10C.jpg",
+    "12C.jpg",
+    "13C.jpg",
+    "15C.jpg",
+    "23C.jpg",
+    "27C.jpg",
+    "30C.jpg",
+    "32C.jpg",
+    "33C.jpg",
+    "37C2.jpg",
+    "39C.jpg",
     "48C.jpg",
-    "49C.jpg",
-    "50C.jpg",
   ],
 };
 
@@ -109,8 +110,7 @@ const ImageHoverTracker: React.FC = () => {
   const [isLastImageOfBatch, setIsLastImageOfBatch] = useState(false);
   const [isLastBatch, setIsLastBatch] = useState(false);
   const [isLastBatchSubmitted, setIsLastBatchSubmitted] = useState(false);
-  const [totalHoverTimeImage1, setTotalHoverTimeImage1] = useState<number>(0);
-  const [totalHoverTimeImage2, setTotalHoverTimeImage2] = useState<number>(0);
+  const navigate = useNavigate();
 
   const [hoverStartTimeImage1, setHoverStartTimeImage1] = useState<
     number | null
@@ -195,6 +195,7 @@ const ImageHoverTracker: React.FC = () => {
   const handleNext = () => {
     if (currentIndex < currentBatchLeft.length - 1) {
       setCurrentIndex((prevIndex) => prevIndex + 1);
+      toast.info("Next image loaded!");
     }
   };
 
@@ -291,6 +292,7 @@ const ImageHoverTracker: React.FC = () => {
         setCurrentIndex(0);
       }
       toast.success("Data submitted successfully!");
+      navigate("/rewards");
     } catch (error) {
       console.error("Error submitting hover data", error);
     }

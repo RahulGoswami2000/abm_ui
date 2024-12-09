@@ -7,16 +7,6 @@ import habit3 from "../../assests/habit 3.jpg";
 import habit4 from "../../assests/habit 4.jpg";
 import habit5 from "../../assests/habit 5.jpg";
 
-import {
-  CartesianGrid,
-  Line,
-  LineChart,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from "recharts";
-
 const MotivationalPage: React.FC = () => {
   const motivationalContent = `
     Breaking free from habits like smoking weed can be challenging, but with dedication, support, and the right tools, a better lifestyle is within reach. 
@@ -130,36 +120,6 @@ const MotivationalPage: React.FC = () => {
         ))}
       </Box>
       <Divider sx={{ width: "80%", mx: "auto", mb: 4, mt: 3 }} />
-      <Box sx={{ textAlign: "center", marginBottom: 4 }}>
-        <Typography variant="h5" gutterBottom>
-          Progress Tracker
-        </Typography>
-        <Typography variant="body2" paragraph>
-          Below is a visual representation of your journey so far. Stay
-          motivated and keep moving forward!
-        </Typography>
-      </Box>
-
-      <ResponsiveContainer width="100%" height={400}>
-        <LineChart data={data}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis
-            dataKey="x"
-            label={{ value: "Days", position: "insideBottom", offset: -5 }}
-          />
-          <YAxis
-            label={{ value: "Progress", angle: -90, position: "insideLeft" }}
-          />
-          <Tooltip />
-          <Line
-            type="monotone"
-            dataKey="y"
-            stroke="#8884d8"
-            strokeWidth={2}
-            dot={{ r: 4 }}
-          />
-        </LineChart>
-      </ResponsiveContainer>
     </Box>
   );
 };

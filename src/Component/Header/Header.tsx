@@ -41,7 +41,7 @@ const Header: React.FC<HeaderProps> = ({ isAuthenticated, onLogout }) => {
       <AppBar position="static" sx={{ backgroundColor: "#4a5cfb" }}>
         <Toolbar>
           <Typography variant="h6" sx={{ flexGrow: 1, fontWeight: "bold" }}>
-            MyApp
+            MindMouse
           </Typography>
 
           <Box sx={{ display: "flex", gap: 3 }}>

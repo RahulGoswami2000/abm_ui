@@ -4,6 +4,7 @@ import Header from "../../Component/Header/Header";
 import { useAuth } from "../Auth/AuthContext";
 import "./Rewards.css";
 import Confetti from "react-confetti"; // Confetti for celebrations
+import { useNavigate } from "react-router-dom";
 
 interface RewardsData {
   completedTasks: number;
