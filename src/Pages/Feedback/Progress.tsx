@@ -13,6 +13,8 @@ import {
 import { PieChart, Pie, Cell, Tooltip as PieTooltip } from "recharts";
 import Header from "../../Component/Header/Header";
 import { useAuth } from "../Auth/AuthContext";
+import { toast, ToastContainer } from "react-toastify"; // Import toast components
+import "react-toastify/dist/ReactToastify.css";
 
 // Define data types
 interface BarChartData {
@@ -139,12 +141,16 @@ const Progress: React.FC = () => {
       console.log(data);
 
       if (Array.isArray(data)) {
-        const timingsArray = data.map((item) => ({
-          task_id: item.task_id, // Task ID
-          cannabisTime: item.negative * 10, // Cannabis time (negative)
-          neutralTime: item.positive * 10, // Neutral time (positive)
-        }));
-        setTimings(timingsArray);
+        if (data.length != 0) {
+          const timingsArray = data.map((item) => ({
+            task_id: item.task_id, // Task ID
+            cannabisTime: item.negative * 10, // Cannabis time (negative)
+            neutralTime: item.positive * 10, // Neutral time (positive)
+          }));
+          setTimings(timingsArray);
+        } else {
+          toast.error("No task submitted");
+        }
       } else {
         console.error("Received data is not an array:", data);
       }
@@ -360,6 +366,17 @@ const Progress: React.FC = () => {
           </>
         )}
       </div>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </>
   );
 };
