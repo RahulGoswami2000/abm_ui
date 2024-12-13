@@ -25,6 +25,12 @@ interface PieChartData {
   value: number;
 }
 
+interface TimingData {
+  task_id: number;
+  cannabisTime: number;
+  neutralTime: number;
+}
+
 const Progress: React.FC = () => {
   const API_BASE_URL = "http://localhost:8080";
   const { isAuthenticated, logout } = useAuth();
@@ -39,6 +45,7 @@ const Progress: React.FC = () => {
   );
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isFeedbackLoading, setIsFeedbackLoading] = useState<boolean>(false);
+  const [timings, setTimings] = useState<TimingData[]>([]);
 
   useEffect(() => {
     const fetchChartData = async () => {
@@ -117,6 +124,32 @@ const Progress: React.FC = () => {
       setFeedback("Failed to generate feedback. Please try again later.");
     } finally {
       setIsFeedbackLoading(false);
+    }
+  };
+
+  const fetchTimings = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get(`${API_BASE_URL}/get-timings`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = response.data.data;
+      console.log(data);
+
+      if (Array.isArray(data)) {
+        const timingsArray = data.map((item) => ({
+          task_id: item.task_id, // Task ID
+          cannabisTime: item.negative * 10, // Cannabis time (negative)
+          neutralTime: item.positive * 10, // Neutral time (positive)
+        }));
+        setTimings(timingsArray);
+      } else {
+        console.error("Received data is not an array:", data);
+      }
+    } catch (error) {
+      console.error("Error fetching timings:", error);
     }
   };
 
@@ -243,6 +276,86 @@ const Progress: React.FC = () => {
                   <PieTooltip />
                 </PieChart>
               </ResponsiveContainer>
+            </div>
+            <div style={{ marginTop: "40px", textAlign: "center" }}>
+              <button
+                onClick={fetchTimings}
+                style={{
+                  display: "block",
+                  margin: "20px auto",
+                  padding: "10px 20px",
+                  backgroundColor: "#4a5cfb",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "5px",
+                  cursor: "pointer",
+                }}
+              >
+                Show Timings
+              </button>
+              {timings && (
+                <div
+                  style={{
+                    marginTop: "20px",
+                    padding: "20px",
+                    backgroundColor: "#f9f9f9",
+                    borderRadius: "8px",
+                    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                  }}
+                >
+                  <h3 style={{ color: "#4a5cfb" }}>Detailed Time Spent</h3>
+                  <table
+                    style={{
+                      width: "100%",
+                      borderCollapse: "collapse",
+                      textAlign: "left",
+                      marginTop: "20px",
+                    }}
+                  >
+                    <thead>
+                      <tr>
+                        <th
+                          style={{
+                            borderBottom: "2px solid #4a5cfb",
+                            padding: "10px",
+                          }}
+                        >
+                          Task
+                        </th>
+                        <th
+                          style={{
+                            borderBottom: "2px solid #4a5cfb",
+                            padding: "10px",
+                          }}
+                        >
+                          Cannabis (Time Spent)
+                        </th>
+                        <th
+                          style={{
+                            borderBottom: "2px solid #4a5cfb",
+                            padding: "10px",
+                          }}
+                        >
+                          Neutral (Time Spent)
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {timings.map((timing, index) => (
+                        <tr key={index}>
+                          <td style={{ padding: "10px" }}>Task {index + 1}</td>
+                          <td style={{ padding: "10px" }}>
+                            {timing.cannabisTime || "0"}
+                          </td>
+                          <td style={{ padding: "10px" }}>
+                            {timing.neutralTime || "0"}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
             </div>
           </>
         )}

@@ -244,6 +244,27 @@ const ImageHoverTracker: React.FC = () => {
     }
   };
 
+
+  const saveIndividualTimes = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      await axios.post(
+        `${API_BASE_URL}/save-individual`,
+        {
+          negative: hoverTimeImage1 / 360,
+          positive: hoverTimeImage2 / 360,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+    } catch (error) {
+      console.error("Error saving hover times", error);
+    }
+  };
+
   // Handle mouse movement for image 1
   const handleMouseMoveImage1 = (event: React.MouseEvent) => {
     const rect = event.currentTarget.getBoundingClientRect(); // Get image's position relative to the page
@@ -284,7 +305,7 @@ const ImageHoverTracker: React.FC = () => {
   const handleSubmit = async () => {
     try {
       await saveHoverTimes();
-
+      await saveIndividualTimes();
       if (isLastImageOfBatch && isLastBatch) {
         setIsLastBatchSubmitted(true);
       } else {
