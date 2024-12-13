@@ -141,8 +141,8 @@ const Progress: React.FC = () => {
       if (Array.isArray(data)) {
         const timingsArray = data.map((item) => ({
           task_id: item.task_id, // Task ID
-          cannabisTime: item.negative * 10, // Cannabis time (negative)
-          neutralTime: item.positive * 10, // Neutral time (positive)
+          cannabisTime: item.negative, // Cannabis time (negative)
+          neutralTime: item.positive, // Neutral time (positive)
         }));
         setTimings(timingsArray);
       } else {
