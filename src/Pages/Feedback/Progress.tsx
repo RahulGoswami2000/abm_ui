@@ -31,6 +31,7 @@ interface TimingData {
   task_id: number;
   cannabisTime: number;
   neutralTime: number;
+  feedback: string;
 }
 
 const Progress: React.FC = () => {
@@ -143,9 +144,10 @@ const Progress: React.FC = () => {
       if (Array.isArray(data)) {
         if (data.length != 0) {
           const timingsArray = data.map((item) => ({
-            task_id: item.task_id, // Task ID
-            cannabisTime: item.negative, // Cannabis time (negative)
-            neutralTime: item.positive, // Neutral time (positive)
+            task_id: item.task_id,
+            cannabisTime: item.negative,
+            neutralTime: item.positive,
+            feedback: item.feedback,
           }));
           setTimings(timingsArray);
         } else {
@@ -344,6 +346,14 @@ const Progress: React.FC = () => {
                         >
                           Neutral (Time Spent)
                         </th>
+                        <th
+                          style={{
+                            borderBottom: "2px solid #4a5cfb",
+                            padding: "10px",
+                          }}
+                        >
+                          Feedback
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
@@ -356,6 +366,7 @@ const Progress: React.FC = () => {
                           <td style={{ padding: "10px" }}>
                             {timing.neutralTime || "0"}
                           </td>
+                          <td style={{ padding: "10px" }}>{timing.feedback}</td>
                         </tr>
                       ))}
                     </tbody>

@@ -110,6 +110,7 @@ const ImageHoverTracker: React.FC = () => {
   const [isLastImageOfBatch, setIsLastImageOfBatch] = useState(false);
   const [isLastBatch, setIsLastBatch] = useState(false);
   const [isLastBatchSubmitted, setIsLastBatchSubmitted] = useState(false);
+  const [backgroundColor, setBackgroundColor] = useState<string>("#ffffff");
   const navigate = useNavigate();
 
   const [hoverStartTimeImage1, setHoverStartTimeImage1] = useState<
@@ -195,7 +196,20 @@ const ImageHoverTracker: React.FC = () => {
   const handleNext = () => {
     if (currentIndex < currentBatchLeft.length - 1) {
       setCurrentIndex((prevIndex) => prevIndex + 1);
-      toast.info("Next image loaded!");
+      const colors = [
+        "#F0F8FF",
+        "#F0FFF0",
+        "#FFF5EE",
+        "#FFFFF0",
+        "#FFF0F5",
+        "#F5FFFA",
+        "#FFFAF0",
+        "#F0FFFF",
+        "#FDF5E6",
+        "#B0E0E6",
+      ]; // Example colors
+      const randomColor = colors[Math.floor(Math.random() * colors.length)];
+      setBackgroundColor(randomColor);
     }
   };
 
@@ -218,6 +232,20 @@ const ImageHoverTracker: React.FC = () => {
   const handlePrevious = () => {
     if (currentIndex > 0) {
       setCurrentIndex((prev) => prev - 1);
+      const colors = [
+        "#F0F8FF",
+        "#F0FFF0",
+        "#FFF5EE",
+        "#FFFFF0",
+        "#FFF0F5",
+        "#F5FFFA",
+        "#FFFAF0",
+        "#F0FFFF",
+        "#FDF5E6",
+        "#B0E0E6",
+      ];
+      const randomColor = colors[Math.floor(Math.random() * colors.length)];
+      setBackgroundColor(randomColor);
     }
   };
 
@@ -244,15 +272,51 @@ const ImageHoverTracker: React.FC = () => {
     }
   };
 
+  const generateFeedback = async () => {
+    const inputPrompt = `The user spent ${
+      hoverTimeImage1 / 360
+    } seconds on the weed image and ${
+      hoverTimeImage2 / 360
+    } seconds on the neutral image. Provide feedback on engagement and how they can cure there anxiety if they are looking at negative aspect.`;
+
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.post(
+        "https://abm-api-sutg.onrender.com/get-feedback",
+        {
+          prompt: inputPrompt,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const data = response.data.data;
+
+      const choices = JSON.parse(data).choices;
+
+      const generatedResponse = choices?.[0]?.message?.content;
+      return (
+        generatedResponse ||
+        "Sorry, we couldn't generate feedback at the moment."
+      );
+    } catch (error) {
+      console.error("Error fetching feedback:", error);
+    }
+  };
 
   const saveIndividualTimes = async () => {
     try {
+      const feedback = await generateFeedback();
       const token = localStorage.getItem("token");
       await axios.post(
         `${API_BASE_URL}/save-individual`,
         {
           negative: hoverTimeImage1 / 360,
           positive: hoverTimeImage2 / 360,
+          feedback: feedback,
         },
         {
           headers: {
@@ -322,7 +386,13 @@ const ImageHoverTracker: React.FC = () => {
   return (
     <>
       <Header isAuthenticated={isAuthenticated} onLogout={logout} />
-      <div className="image-container">
+      <div
+        className="image-container"
+        style={{
+          backgroundColor: backgroundColor,
+          transition: "background-color 0.3s ease",
+        }}
+      >
         {/* Image 1 */}
         {currentLeftImage && (
           <div
