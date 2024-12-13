@@ -277,7 +277,7 @@ const ImageHoverTracker: React.FC = () => {
       hoverTimeImage1 / 360
     } seconds on the weed image and ${
       hoverTimeImage2 / 360
-    } seconds on the neutral image. Provide feedback on engagement and how they can cure there anxiety if they are looking at negative aspect.`;
+    } seconds on the neutral image. Provide feedback on engagement and how they can cure there anxiety if they are looking at negative aspect. And make it short please`;
 
     try {
       const token = localStorage.getItem("token");
