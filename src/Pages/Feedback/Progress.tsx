@@ -20,6 +20,7 @@ import "react-toastify/dist/ReactToastify.css";
 interface BarChartData {
   name: string;
   minutes: number;
+  color: string;
 }
 
 interface PieChartData {
@@ -66,8 +67,16 @@ const Progress: React.FC = () => {
 
         // Prepare Bar Chart data
         setBarChartData([
-          { name: "Cannabis cue", minutes: data.data.timeOnNegative },
-          { name: "Neutral", minutes: data.data.timeOnPositive },
+          {
+            name: "Cannabis cue",
+            minutes: data.data.timeOnNegative,
+            color: "#8884d8",
+          },
+          {
+            name: "Neutral",
+            minutes: data.data.timeOnPositive,
+            color: "#82ca9d",
+          },
         ]);
 
         // Prepare Pie Chart data
@@ -247,7 +256,20 @@ const Progress: React.FC = () => {
               <ResponsiveContainer width="100%" height={400}>
                 <BarChart data={barChartData}>
                   <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" />
+                  <XAxis
+                    dataKey="name"
+                    tick={({ x, y, payload }) => (
+                      <g transform={`translate(${x},${y})`}>
+                        <text x={-15} y={20} textAnchor="middle">
+                          <image
+                            href={payload.value.imageUrl} // Use the image URL from the data
+                            width={30} // Set image width
+                            height={30} // Set image height
+                          />
+                        </text>
+                      </g>
+                    )}
+                  />
                   <YAxis
                     label={{
                       value: "Minutes",
@@ -257,7 +279,15 @@ const Progress: React.FC = () => {
                   />
                   <Tooltip />
                   <Legend verticalAlign="top" height={36} />
-                  <Bar dataKey="minutes" name="Minutes Spent" fill="#8884d8" />
+                  {barChartData.map((entry, index) => (
+                    <Bar
+                      key={index}
+                      dataKey="minutes"
+                      name={entry.name}
+                      fill={entry.color} // Use the color from each entry
+                      data={[entry]} // Pass each individual entry as data for the bar
+                    />
+                  ))}
                 </BarChart>
               </ResponsiveContainer>
             </div>
