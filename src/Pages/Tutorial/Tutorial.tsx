@@ -111,17 +111,16 @@ const Tutorial: React.FC = () => {
         {/* Video Section */}
         <div className="content-section">
           <div className="video-box">
-            <video
-              controls
-              className="tutorial-video"
-              poster="https://via.placeholder.com/800x450?text=Video+Preview"
-            >
-              <source
-                src="https://www.w3schools.com/html/mov_bbb.mp4"
-                type="video/mp4"
-              />
-              Your browser does not support the video tag.
-            </video>
+            <iframe
+              width="560"
+              height="315"
+              src="https://www.youtube.com/embed/DnDyRqu184c?si=pmCyQv83JhgqG9R-"
+              title="YouTube video player"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allowFullScreen
+            ></iframe>
             <p className="video-caption">Watch the tutorial to get started!</p>
           </div>
         </div>

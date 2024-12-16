@@ -17,21 +17,30 @@
 }
 
 .content-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 40px;
+  display: flex; /* Enables Flexbox layout */
+  justify-content: center; /* Centers horizontally */
+  align-items: center; /* Centers vertically */
+  flex-direction: column; /* Keeps elements stacked vertically */
+  margin-bottom: 40px; /* Spacing below the section */
+  text-align: center; /* Aligns captions and text content */
+  height: auto; /* Ensures the height adapts to content */
 }
 
 .video-box {
-  width: 90%;
-  max-width: 800px;
+  display: flex; /* Flexbox to center video */
+  justify-content: center; /* Centers the video horizontally */
+  align-items: center; /* Centers video vertically */
+  width: 100%; /* Full width container */
+  max-width: 800px; /* Ensures the video doesn’t stretch too wide */
+  margin: 0 auto; /* Horizontally centers the container */
+  text-align: center; /* Optional for captions alignment */
 }
 
 .tutorial-video {
-  width: 100%;
-  border-radius: 10px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  width: 100%; /* Ensures it scales responsively */
+  max-width: 800px; /* Restricts the max width of the video */
+  border-radius: 10px; /* Adds rounded corners */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Adds a subtle shadow */
 }
 
 .video-caption {
