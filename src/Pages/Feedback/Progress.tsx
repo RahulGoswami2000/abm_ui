@@ -97,6 +97,7 @@ const Progress: React.FC = () => {
     const timeFirst = localStorage.getItem("timeSpentFirst");
     const timeSecond = localStorage.getItem("timeSpentSecond");
     const firstHovered = localStorage.getItem("firstHovered");
+    
 
     if (timeFirst) setTimeSpentFirst(Number(timeFirst));
     if (timeSecond) setTimeSpentSecond(Number(timeSecond));
@@ -105,8 +106,9 @@ const Progress: React.FC = () => {
 
   const generateFeedback = async () => {
     setIsFeedbackLoading(true);
-
-    const inputPrompt = `The user spent ${timeSpentFirst} seconds on the weed image and ${timeSpentSecond} seconds on the neutral image. Provide feedback on engagement and suggestions for improvement to user as how they can focus on positive aspect.`;
+    const firstAnswer = localStorage.getItem("firstAnswer");
+    const secondAnswer = localStorage.getItem("secondAnswer");
+    const inputPrompt = `The user spent ${timeSpentFirst} seconds on the weed image and ${timeSpentSecond} seconds on the neutral image. Provide feedback on engagement and suggestions for improvement to user as how they can focus on positive aspect. These are the questions and the answer of it from the user so tailor your answer according to give the feedback. How often do you use cannabis? Ans: ${firstAnswer}. How often during the past 6 months did you find that you were not able to stop using cannabis once you had started? Ans: ${secondAnswer}`;
 
     try {
       const token = localStorage.getItem("token");
