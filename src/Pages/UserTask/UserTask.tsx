@@ -111,6 +111,8 @@ const ImageHoverTracker: React.FC = () => {
   const [isLastBatch, setIsLastBatch] = useState(false);
   const [isLastBatchSubmitted, setIsLastBatchSubmitted] = useState(false);
   const [backgroundColor, setBackgroundColor] = useState<string>("#ffffff");
+  const [nudgeMessage, setNudgeMessage] = useState<string | null>(null);
+  const [nudgeTimeout, setNudgeTimeout] = useState<NodeJS.Timeout | null>(null);
   const navigate = useNavigate();
 
   const [hoverStartTimeImage1, setHoverStartTimeImage1] = useState<
@@ -159,6 +161,10 @@ const ImageHoverTracker: React.FC = () => {
 
     setHoverStartTimeImage1(Date.now());
     setIsHoveringImage1(true); // Set hover state to true
+    const timeout = setTimeout(() => {
+      setNudgeMessage("Take a look at the right image! 👉");
+    }, 4000);
+    setNudgeTimeout(timeout);
   };
   const handleMouseLeaveImage1 = () => {
     if (hoverStartTimeImage1 !== null) {
@@ -167,6 +173,11 @@ const ImageHoverTracker: React.FC = () => {
       setHoverStartTimeImage1(null);
     }
     setIsHoveringImage1(false); // Set hover state to false
+    if (nudgeTimeout) {
+      clearTimeout(nudgeTimeout);
+      setNudgeTimeout(null);
+    }
+    setNudgeMessage(null);
   };
 
   // Handle mouse enter and leave for image 2
@@ -395,32 +406,43 @@ const ImageHoverTracker: React.FC = () => {
       >
         {/* Image 1 */}
         {currentLeftImage && (
-          <div
-            className="image-wrapper"
-            onMouseEnter={handleMouseEnterImage1}
-            onMouseLeave={handleMouseLeaveImage1}
-            onMouseMove={handleMouseMoveImage1}
-          >
-            <img
-              src={require(`../../assests/cannabis/${currentLeftImage}`)}
-              alt={`image ${currentIndex + 1}`}
-              className="image"
-            />
+          <div>
             <div
-              className="overlay"
-              style={
-                {
-                  "--mouse-x": `${mousePositionImage1.x}px`,
-                  "--mouse-y": `${mousePositionImage1.y}px`,
-                  maskImage: isHoveringImage1
-                    ? "radial-gradient(circle at var(--mouse-x) var(--mouse-y), transparent 0%, transparent 15%, rgba(0, 0, 0, 0.6) 16%)"
-                    : "none",
-                  WebkitMaskImage: isHoveringImage1
-                    ? "radial-gradient(circle at var(--mouse-x) var(--mouse-y), transparent 0%, transparent 15%, rgba(0, 0, 0, 0.6) 16%)"
-                    : "none",
-                } as React.CSSProperties
-              }
-            />
+              className="image-wrapper"
+              onMouseEnter={handleMouseEnterImage1}
+              onMouseLeave={handleMouseLeaveImage1}
+              onMouseMove={handleMouseMoveImage1}
+            >
+              <img
+                src={require(`../../assests/cannabis/${currentLeftImage}`)}
+                alt={`image ${currentIndex + 1}`}
+                className="image"
+              />
+              <div
+                className="overlay"
+                style={
+                  {
+                    "--mouse-x": `${mousePositionImage1.x}px`,
+                    "--mouse-y": `${mousePositionImage1.y}px`,
+                    maskImage: isHoveringImage1
+                      ? "radial-gradient(circle at var(--mouse-x) var(--mouse-y), transparent 0%, transparent 15%, rgba(0, 0, 0, 0.6) 16%)"
+                      : "none",
+                    WebkitMaskImage: isHoveringImage1
+                      ? "radial-gradient(circle at var(--mouse-x) var(--mouse-y), transparent 0%, transparent 15%, rgba(0, 0, 0, 0.6) 16%)"
+                      : "none",
+                  } as React.CSSProperties
+                }
+              />
+            </div>
+            {nudgeMessage && (
+              <Typography
+                variant="body2"
+                color="error"
+                sx={{ textAlign: "center", mt: 2 }}
+              >
+                {nudgeMessage}
+              </Typography>
+            )}
           </div>
         )}
         {/* Image 2 */}

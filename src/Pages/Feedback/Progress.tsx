@@ -64,7 +64,8 @@ const Progress: React.FC = () => {
 
         localStorage.setItem("timeSpentFirst", data.data.timeOnNegative);
         localStorage.setItem("timeSpentSecond", data.data.timeOnPositive);
-
+        localStorage.setItem("firstAnswer", data.data.survey.question_1);
+        localStorage.setItem("secondAnswer", data.data.survey.question_3);
         // Prepare Bar Chart data
         setBarChartData([
           {
