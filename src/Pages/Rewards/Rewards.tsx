@@ -39,6 +39,10 @@ const Rewards: React.FC = () => {
     fetchRewardsData();
   }, []);
 
+  const calculateMaxPoints = (completedTasks: number) => {
+    return completedTasks * 100;
+  };
+
   return (
     <>
       <Header isAuthenticated={isAuthenticated} onLogout={logout} />
@@ -57,14 +61,17 @@ const Rewards: React.FC = () => {
             {/* Points Section */}
             <div className="points-card">
               <h2>Total Points Earned</h2>
-              <div className="points-value">{rewardsData.totalPoints}</div>
+              <div className="points-value">
+                {rewardsData.totalPoints} /{" "}
+                {calculateMaxPoints(rewardsData.completedTasks)}
+              </div>
             </div>
 
             {/* Tasks Section */}
             <div className="tasks-section">
               <h3>Tasks You've Completed</h3>
               <div className="tasks-value">{rewardsData.completedTasks}</div>
-              <p>Keep going! More tasks mean more points.</p>
+              <p>Keep going! More tasks mean more rewards.</p>
             </div>
 
             {/* Achievements Section */}
@@ -82,7 +89,7 @@ const Rewards: React.FC = () => {
           </div>
         ) : (
           <div className="error-message">
-            Oops! You dont have any task completed. Please try again later.
+            Oops! You don't have any task completed. Please try again later.
           </div>
         )}
       </div>
