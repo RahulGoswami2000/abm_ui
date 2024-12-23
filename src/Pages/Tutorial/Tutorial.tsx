@@ -114,7 +114,7 @@ const Tutorial: React.FC = () => {
             <iframe
               width="560"
               height="315"
-              src="https://www.youtube.com/embed/DnDyRqu184c?si=pmCyQv83JhgqG9R-"
+              src="https://www.youtube.com/embed/voZMeYo9xMg?si=ar4s2lNAo2MiAgHg"
               title="YouTube video player"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
