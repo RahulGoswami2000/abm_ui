@@ -139,6 +139,11 @@ const ImageHoverTracker: React.FC = () => {
   useEffect(() => {
     const preference = parseInt(localStorage.getItem("preference")!);
     const selectedSet = imageSets[preference as keyof typeof imageSets] || [];
+
+    if (localStorage.getItem("isFirstTime") === null) {
+      localStorage.setItem("isFirstTime", "0");
+    }
+
     if (preference === 0 || preference === 1 || preference === 2) {
       setImagesLeft(imageSets[preference]);
     } else {
@@ -161,10 +166,14 @@ const ImageHoverTracker: React.FC = () => {
 
     setHoverStartTimeImage1(Date.now());
     setIsHoveringImage1(true); // Set hover state to true
-    const timeout = setTimeout(() => {
-      setNudgeMessage("Take a look at the right image! 👉");
-    }, 4000);
-    setNudgeTimeout(timeout);
+    const isFirstTime = localStorage.getItem("isFirstTime"); // Get value from localStorage
+    if (isFirstTime === "1") {
+      // Only show the nudge message if it's not the first time
+      const timeout = setTimeout(() => {
+        setNudgeMessage("Take a look at the right image! 👉");
+      }, 4000);
+      setNudgeTimeout(timeout);
+    }
   };
   const handleMouseLeaveImage1 = () => {
     if (hoverStartTimeImage1 !== null) {
@@ -381,6 +390,7 @@ const ImageHoverTracker: React.FC = () => {
     try {
       await saveHoverTimes();
       await saveIndividualTimes();
+      localStorage.setItem("isFirstTime", "1");
       if (isLastImageOfBatch && isLastBatch) {
         setIsLastBatchSubmitted(true);
       } else {
