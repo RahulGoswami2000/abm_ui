@@ -138,7 +138,7 @@ const CannabisSurvey: React.FC = () => {
     try {
       // Send a POST request to your backend API
       const response = await axios.post(
-        "https://abm-api-sutg.onrender.com/save-survey",
+        "http://localhost:8080/save-survey",
         formattedResponses
       );
 

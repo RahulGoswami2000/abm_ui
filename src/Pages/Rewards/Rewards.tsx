@@ -12,7 +12,7 @@ interface RewardsData {
 }
 
 const Rewards: React.FC = () => {
-  const API_BASE_URL = "https://abm-api-sutg.onrender.com";
+  const API_BASE_URL = "http://localhost:8080";
   const { isAuthenticated, logout } = useAuth();
   const [rewardsData, setRewardsData] = useState<RewardsData | null>(null);
   const [isLoading, setIsLoading] = useState(true);

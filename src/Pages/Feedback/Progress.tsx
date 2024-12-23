@@ -36,7 +36,7 @@ interface TimingData {
 }
 
 const Progress: React.FC = () => {
-  const API_BASE_URL = "https://abm-api-sutg.onrender.com";
+  const API_BASE_URL = "http://localhost:8080";
   const { isAuthenticated, logout } = useAuth();
 
   const [barChartData, setBarChartData] = useState<BarChartData[]>([]);
@@ -114,7 +114,7 @@ const Progress: React.FC = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
-        "https://abm-api-sutg.onrender.com/get-feedback",
+        "http://localhost:8080/get-feedback",
         {
           prompt: inputPrompt,
         },
